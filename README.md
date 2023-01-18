@@ -20,7 +20,9 @@ The rice vibe and general look was inspired by general cyberpunk media, especial
 The font used everywhere is [JetBrains Mono](https://www.jetbrains.com/lp/mono/), and for the icons to work you need the following fonts;
 `ttf-nerd-fonts-symbols-2048-em`, `ttf-nerd-fonts-symbols-common`, `ttf-ubuntu-font-family` and `otf-font-awesome`. The [wallpaper](https://wallhaven.cc/w/g7jo5q) that is shown in the screenshots can be found here.
 
-The widget for the connection is **not nm-applet**. I am using `connman` in this install, so you will have to update the `on-click` behaviour in the waybar configuration to use your preferred connection manager.
+The Firefox theme is called "Matte Black (Red)" and the VSCode theme is the "Cyberpunk" theme by max-ss.
+
+The widget for the wifi connection is **not nm-applet**. I am using `connman` in this install, so you will have to update the `on-click` behaviour in the waybar configuration to use your preferred connection manager.
 
 For battery notifications I am using `batsignal`. It is available in the AUR, but you could also make a custom waybar script that could notify you. I just went with the install for the less hassle.
 
