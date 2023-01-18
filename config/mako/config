@@ -1,0 +1,24 @@
+# KED'S MAKO SETTINGS FILE
+# MAIN CONFIG FILE [CONFIG]
+# (C) 2023 Kedislav - File under GNU GPL v3.0
+#/////////////////////////////////////////////////
+
+#//GLOBAL
+max-history=5
+sort=-time
+max-visible=3
+default-timeout=5000
+
+#//STYLE
+font=JetBrains Mono 10
+background-color=#060608
+text-color=#f2f2f2
+width=230
+height=100
+border-size=2
+border-color=#ff0055
+border-radius=15
+icons=0
+text-alignment=center
+
+format=<b>%a</b> - %s\n%b

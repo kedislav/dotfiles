@@ -1,0 +1,373 @@
+# KED'S SWAY CONFIG
+# MAIN CONFIG FILE [CONFIG]
+# (C) 2023 Kedislav - File under GNU GPL v3.0
+#/////////////////////////////////////////////////////////////////////
+# Scripts and Custom Configs are saved in ~/.config/sway/scripts
+# Lock Config for swaylock is saved in ~/.config/sway/lock
+#/////////////////////////////////////////////////////////////////////
+#//----(1) Variables - set up variables for use in binds
+#//----(2) Output - set up output variables and behaviour
+#//----(3) Input - set up input variables and behaviour
+#//----(4) Visuals - set up visual aspects of swaywm
+#//----(5) Binds - set up keybinds for apps and functions
+#//----(6) Movement - set up movement keybinds and behaviour
+#//----(7) Workspaces - set up workspace keybinds and behaviour
+#//----(8) Apps - set up autostart apps and specific app behaviour
+#////////////////////////////////////////////////////////////////////
+
+#############
+# VARIABLES #
+#############
+
+#//mod key
+set $mod Mod4
+
+#//vim-like directional
+set $left u
+set $down i
+set $up o
+set $right p
+
+#//terminal
+set $term alacritty
+
+#//menu
+set $menu wofi
+
+#//powermenu
+set $powermenu $HOME/.config/wofi/scripts/powermenu.sh
+
+#//bar
+set $bar waybar
+
+#//laptop screen
+set $laptop eDP-1
+
+#//volume
+set $sink_volume pactl get-sink-volume @DEFAULT_SINK@ | grep '^Volume:' | cut -d / -f 2 | tr -d ' ' | sed 's/%//'
+set $source_volume pactl get-source-volume @DEFAULT_SOURCE@ | grep '^Volume:' | cut -d / -f 2 | tr -d ' ' | sed 's/%//'
+set $volume_down $(pactl set-sink-volume @DEFAULT_SINK@ -5% && sink_volume)
+set $volume_up $(pactl set-sink-volume @DEFAULT_SINK@ +5% && sink_volume)
+set $volume_mute $(pactl set-sink-mute @DEFAULT_SINK@ toggle && pactl get-sink-mute @DEFAULT_SINK@ | sed -En "/no/ s/.*/$($sink_volume)/p; /yes/ s/.*/0/p")
+set $mic_mute $(pactl set-source-mute @DEFAULT_SOURCE@ toggle && pactl get-source-mute @DEFAULT_SOURCE@ | sed -En "/no/ s/.*/$($source_volume)/p; /yes/ s/.*/0/p")
+
+##########
+# OUTPUT #
+##########
+
+#//resolution
+output eDP-1 mode 1920x1080
+output HDMI-1 mode 1920x1080
+
+#//position
+output eDP-1 pos 0 0
+output HDMI-1 pos 1920 0
+
+#//clamshell mode
+bindswitch --reload --locked lid:on output $laptop disable
+bindswitch --reload --locked lid:off output $laptop enable
+exec_always $HOME/.config/sway/scripts/clamshell.sh
+
+#//idle
+#exec swayidle -w\
+#    timeout 600 'swaylock -f -i $HOME/Pictures/Wallpapers/2501.png --font JetBrains Mono --font-size 10 --indicator-x-position 100 --indicator-y-position 100'\
+#    timeout 900 'swaymsg "output * dpms off"'\
+#    resume 'swaymsg "output * dpms on"'\
+#    before-sleep 'swaylock -f -i $HOME/Pictures/Wallpapers/2501.png --font JetBrains Mono --font-size 10 --indicator-x-position 100 --indicator-y-position 100'
+
+#//lock
+bindsym $mod+l exec $HOME/.config/sway/scripts/lockman.sh
+
+#########
+# INPUT #
+#########
+
+#//keyboard
+input type:keyboard {
+    xkb_layout us
+    xkb_numlock enabled
+}
+
+#//touchpad
+input type:touchpad {
+    accel_profile flat
+    dwt enabled
+    middle_emulation enabled
+    natural_scroll disabled
+    scroll_method two_finger
+    tap disabled
+}
+
+###########
+# VISUALS #
+###########
+
+#//font
+font pango:JetBrainsMono Regular 10
+
+#//gaps
+gaps inner 10
+gaps outer 8
+
+#//round corners
+#corner_radius 15
+
+#//background
+exec_always swaybg -i $HOME/Pictures/Wallpapers/GhostPoster.png
+
+#//gtk theming
+#exec_always $HOME/.config/sway/scripts/import-gsettings
+
+#//colors
+#class				border		background	text
+client.focused			#e455ae		#cb1dcd		#d1c5c0
+client.focused_inactive		#e455ae		#cb1dcd		#d1c5c0
+client.unfocused		#272932		#272932		#d1c5c0
+client.urgent			#272932		#272932		#d1c5c0
+client.placeholder		#272932		#272932		#d1c5c0
+
+#//no window title
+default_border none
+
+#//thin borders
+smart_borders on
+
+#//bar
+bar {
+    swaybar_command $bar
+}
+
+#########
+# BINDS #
+#########
+
+#//terminal
+bindsym $mod+Return exec $term
+
+#//browser
+bindsym $mod+w exec MOZ_ENABLE_WAYLAND=1 firefox
+
+#//code editor
+bindsym $mod+e exec code
+
+#//menu launch
+bindsym $mod+Space exec $menu
+
+#//powermenu
+bindsym $mod+Shift+q exec $powermenu
+
+#//kill window
+bindsym $mod+q kill
+
+#//screenshot
+#----zone selection screenshot to both folder and clipboard
+bindsym $mod+Print exec grim -g "$(slurp)" - | tee ~/Pictures/Screenshots/$(date '+%Y-%m-%d-%H-%M-%S').png | wl-copy
+#----fullscreen screenshot to folder
+bindsym $mod+Shift+Print exec grim ~/Pictures/Screenshots/$(date '+%Y-%m-%d-%H-%M-%S').png
+
+#//show scratchpad
+bindsym $mod+minus scratchpad show
+
+#//move window to scratchpad
+bindsym $mod+Shift+minus move scratchpad
+
+#//reload config
+bindsym $mod+Shift+r reload
+
+#//audio
+bindsym --locked XF86AudioRaiseVolume exec $volume_up
+bindsym --locked XF86AudioLowerVolume exec $volume_down
+bindsym --locked XF86AudioMute exec $volume_mute
+
+#//player
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioStop exec playerctl stop
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
+
+#//backlight
+bindsym XF86MonBrightnessDown exec brightnessctl --min-val=0 set '5%-'
+bindsym XF86MonBrightnessUp exec brightnessctl set '5%+'
+
+############
+# MOVEMENT #
+############
+
+#//move floating window
+floating_modifier $mod normal
+
+#//toggle window
+#----fullscreen
+bindsym $mod+Shift+f fullscreen toggle
+#----tiling-floating
+bindsym $mod+f floating toggle
+#--------focus between
+bindsym $mod+g focus mode_toggle
+
+#//focus windows
+#----parent
+bindsym $mod+a focus parent
+#----child
+bindsym $mod+d focus child
+
+#//change focus
+#----keyboard
+#bindsym $mod+$left focus left
+#bindsym $mod+$down focus down
+#bindsym $mod+$up focus up
+#bindsym $mod+$right focus right
+#----directionals
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+#//move focused window
+#----keyboard
+#bindsym $mod+Shift+$left move left
+#bindsym $mod+Shift+$down move down
+#bindsym $mod+Shift+$up move up
+#bindsym $mod+Shift+$right move right
+#----directionals
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+#//split window
+#----horizontal
+bindsym $mod+b splith
+#----vertical
+bindsym $mod+v splitv
+
+#//resize window
+mode "resize" {
+        #//These bindings trigger as soon as you enter the resize mode
+        #//keyboard
+        #----pressing h will shrink the window’s width.
+        #bindsym $left resize shrink width 10 px
+        #----pressing j will grow the window’s width.
+        #bindsym $right resize grow height 10 px
+        #----pressing k will shrink the window’s height.
+        #bindsym $up resize shrink height 10 px
+        #----pressing l will grow the window’s height.
+        #bindsym $down resize grow width 10 px
+        #//directionals
+        #----pressing left will shrink the window’s width.
+        bindsym Left resize shrink width 10 px or 10 ppt
+        #----pressing right will grow the window’s width.
+        bindsym Down resize grow height 10 px or 10 ppt
+        #----pressing up will shrink the window’s height.
+        bindsym Up resize shrink height 10 px or 10 ppt
+        #----pressing down will grow the window’s height.
+        bindsym Right resize grow width 10 px or 10 ppt
+        #//back to normal: Enter or Escape or $mod+r
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym $mod+r mode "default"
+}
+bindsym $mod+r mode "resize"
+
+##############
+# WORKSPACES #
+##############
+
+#//workspaces
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws10 "10"
+
+#//switch workspaces
+bindsym $mod+1 workspace number $ws1
+bindsym $mod+2 workspace number $ws2
+bindsym $mod+3 workspace number $ws3
+bindsym $mod+4 workspace number $ws4
+bindsym $mod+5 workspace number $ws5
+bindsym $mod+6 workspace number $ws6
+bindsym $mod+7 workspace number $ws7
+bindsym $mod+8 workspace number $ws8
+bindsym $mod+9 workspace number $ws9
+bindsym $mod+0 workspace number $ws10
+
+#//move window to workspace
+bindsym $mod+Shift+1 move container to workspace number $ws1
+bindsym $mod+Shift+2 move container to workspace number $ws2
+bindsym $mod+Shift+3 move container to workspace number $ws3
+bindsym $mod+Shift+4 move container to workspace number $ws4
+bindsym $mod+Shift+5 move container to workspace number $ws5
+bindsym $mod+Shift+6 move container to workspace number $ws6
+bindsym $mod+Shift+7 move container to workspace number $ws7
+bindsym $mod+Shift+8 move container to workspace number $ws8
+bindsym $mod+Shift+9 move container to workspace number $ws9
+bindsym $mod+Shift+0 move container to workspace number $ws10
+
+################
+# APPLICATIONS #
+################
+
+#//autostart
+#----notifications
+exec mako -c $HOME/.config/mako/config
+#----battery notifications
+exec batsignal -b -w 30 -c 15 -d 5 -C 'BAT LOW -- CHARGE NOW'
+#----make gtk3 apps start faster
+exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP
+exec hash dbus-update-activation-environment 2>/dev/null && dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP
+
+#//workspace assignments
+#----terminal
+#assign [class="Alacritty"] 1
+#----browser
+#assign [class="firefox"] 2
+#for_window [class="firefox"] focus
+#assign [app_id="firefox"] 2
+#for_window [app_id="firefox"] focus
+#----file manager
+#assign [class="Caja"] 3
+#for_window [class="caja"] focus
+#assign [app_id="Caja"] 3
+#for_window [app_id="caja"] focus
+#----chat and im
+#assign [class="discord"] 4
+#for_window [class="discord"] focus
+#assign [app_id="discord"] 4
+#for_window [app_id="discord"] focus
+#assign [class="Telegram"] 4
+#for_window [class="Telegram"] focus
+
+#//mode definitions
+#----floating for apps that require it
+for_window [class="Yad" instance="yad"] floating enable
+for_window [app_id="yad"] floating enable
+#----floating for special apps
+for_window [class="Pavucontrol"] floating enable, resize set width 40 ppt height 30 ppt, move position center
+for_window [app_id="pavucontrol"] floating enable, resize set width 40 ppt height 30 ppt, move position center
+for_window [class="Pamac-manager"] floating enable, resize set width 80 ppt height 70 ppt
+for_window [app_id="pamac-manager"] floating enable, resize set width 80 ppt height 70 ppt
+for_window [class="Xsane" instance="xsane"] floating enable
+for_window [class="Lxappearance"] floating enable, resize set width 60 ppt height 50 ppt
+for_window [class="melonDS"] floating enable
+#----floating for window roles
+for_window [window_role="pop-up"] floating enable
+for_window [window_role="dialog"] floating enable
+for_window [window_role="bubble"] floating enable
+for_window [window_role="task_dialog"] floating enable
+for_window [window_role="menu"] floating enable
+for_window [window_role="About"] floating enable
+for_window [window_role="Preferences"] floating enable
+for_window [window_role="Save File"] floating enable
+for_window [window_role="GtkFileChooserDialog"] floating enable
+
+#//idle inhibit
+for_window [class="firefox"] inhibit_idle fullscreen
+for_window [class="discord"] inhibit_idle focused
+for_window [app_id="mpv"] inhibit_idle fullscreen
+for_window [app_id="io.github.celluloid_player.Celluloid"] inhibit_idle fullscreen
+for_window [class="melonDS"] inhibit_idle fullscreen

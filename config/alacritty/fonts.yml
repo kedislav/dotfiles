@@ -1,0 +1,36 @@
+# KED'S ALACRITTY FONT CONFIG
+# FONTS CONFIGURATION FILE [FONTS.YML]
+# (C) 2023 Kedislav - File under GNU GPL v3.0
+#///////////////////////////////////////////////////////////////////
+# Font configuration for the Alacritty terminal is done from here.
+# Be sure to have the font installed and edit accordingly.
+# Use the name of the font that your system recognizes.
+#///////////////////////////////////////////////////////////////////
+
+font:
+  #//normal
+  normal:
+    family: "JetBrains Mono"
+    style: Regular
+  #//bold
+  bold:
+    family: "JetBrains Mono"
+    style: Bold
+  #//italic
+  italic:
+    family: "JetBrains Mono"
+    style: Italic
+  #//bold italic
+  bold_italic:
+    family: "JetBrains Mono"
+    style: Bold Italic
+  #//font size
+  size: 10
+  #//offset
+  #offset:
+  #  x: 0
+  #  y: 0
+  #//glyph offset
+  #glyph_offset:
+  #  x: 0
+  #  y: 0

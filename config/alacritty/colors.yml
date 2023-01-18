@@ -1,0 +1,38 @@
+# KED'S ALACRITTY COLORS FILE
+# COLOR PALETTE CONFIG FILE [COLORS.YML
+# (C) 2023 Kedislav - File under GNU GPL v3.0]
+#///////////////////////////////////////////////////////////////////////
+# The colors used are mainly done for a futuristic contrast.
+# All color configurations must be done here, except for the prompt.
+# In case the prompt is typewritten, that is a separate config file in
+# the .config/zsh/zshrc file (which is a symlink to the .zshrc).
+#
+# You can also just edit your own .zshrc in case you did not symlink
+# my version, and it should work fine.
+#///////////////////////////////////////////////////////////////////////
+
+colors:
+  #//default colors
+  primary:
+    background: '#060608'
+    foreground: '#ff0055'
+  #//normal colors
+  normal:
+    black:   '#32363D'
+    red:     '#E06B74'
+    green:   '#98C379'
+    yellow:  '#E5C07A'
+    blue:    '#62AEEF'
+    magenta: '#C778DD'
+    cyan:    '#55B6C2'
+    white:   '#f2f2f2'
+  #//bright colors
+  bright:
+    black:   '#50545B'
+    red:     '#EA757E'
+    green:   '#A2CD83'
+    yellow:  '#EFCA84'
+    blue:    '#6CB8F9'
+    magenta: '#D282E7'
+    cyan:    '#5FC0CC'
+    white:   '#f2f2f2'
