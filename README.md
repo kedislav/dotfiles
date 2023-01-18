@@ -3,7 +3,7 @@
 <img src="assets/demo_composite.png" alt="A screenshot showcasing a futuristicly themed Arch Linux">
 
 ## General Info
-This rice was posted on January 18th, 2023 to [r/unixporn](https://www.reddit.com/r/unixporn). Post can be [seen here](https://www.reddit.com/r/unixporn/comments/10fd5bt/sway_waybar_90s_scifi_anime_medley). It was inspired by general cyberpunk media, especially movies like *Akira*, *Ghost in the Shell* and *Patlabor*, as well as shows such as *Altered Carbon* and *Cyberpunk: Edgerunners*.
+This rice was posted on January 18th, 2023 to [r/unixporn](https://www.reddit.com/r/unixporn). Post can be [seen here](https://www.reddit.com/r/unixporn/comments/10fd5bt/sway_waybar_90s_scifi_anime_medley). It was inspired by general cyberpunk media, especially movies like *Akira*, *Ghost in the Shell* and *Patlabor*, as well as shows such as *Altered Carbon* and *Cyberpunk: Edgerunners*. It was a fun little project and now, my daily driver.
 
 |🤖|🍀|
 |:---:|:---:|
